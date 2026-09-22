@@ -1,110 +1,1303 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <!-- 指定网页使用 UTF-8 编码，避免中文显示为乱码。 -->
-    <meta charset="utf-8">
-
-    <!-- 让网页在手机屏幕上正确缩放。 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- 显示在浏览器标签页中的网站标题。 -->
-    <title>吴张睿的纪念网站</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>致最好的兄弟 · 这是一份记忆手账</title>
+    <!--
+    ════════════════════════════════════════════════════════════════
+      📖 修改点速查表（在 VS Code 里按 Ctrl/Cmd+F 搜下面的中文标记）
+    ────────────────────────────────────────────────────────────────
+      【修改点1】顶部大标题（第 400 行附近 <h1>）
+      【修改点2】介绍文字（标题下面那段 <p>）
+      【修改点3】手写英文小字（标题下面那行英文）
+      【照片1】～【照片5】照片：把照片放进 assets/ 文件夹，
+                命名 photo1.jpg ～ photo5.jpg，按卡片里注释替换 SVG
+      【说明1】～【说明5】每张照片右侧的标题 / 英文 / 说明文字
+      【修改点6】日记本正文（“写在最后”那张纸上的所有文字）
+      【修改点7】签名：把签名导出成 PNG，命名 signature.png 放进 assets/
+                （PDF 请先转成 PNG），再按注释启用 <img>
+      【修改点8】页脚邮箱（your.email@example.com）
+      【修改点9】页脚大学（某某大学）
+      【主题色】想换整体配色，改下面 :root 里的 CSS 变量
+    ────────────────────────────────────────────────────────────────
+      深色/浅色模式：网页右上角小按钮切换，自动保存在访客浏览器里，
+      无需改代码。想自己预览深色效果，网址后加 ?theme=dark 即可。
+    ════════════════════════════════════════════════════════════════
+    -->
+    <!-- 防止深色模式下首屏闪白：页面加载前先读一次用户偏好 -->
+    <script>(function(){try{
+  var t = new URLSearchParams(location.search).get('theme') || localStorage.getItem('fj-theme') || 'auto';
+  if(t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+}catch(e){}})();</script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='6' y='6' width='52' height='52' rx='9' fill='%23b0493a'/%3E%3Ctext x='32' y='45' font-size='38' text-anchor='middle' fill='%23fbf5e6' font-family='KaiTi,serif'%3E%E5%8F%8B%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Caveat:wght@400;500;600;700&family=Long+Cang&display=swap">
     <style>
-        /* 设置整个页面的字体、宽度、边距、文字颜色和背景颜色。 */
+        /* ═══════════ 【主题色】基础色板：浅色（默认） ═══════════ */
+        :root {
+            --paper: #f5eedd; /* 页面底色：淡暖纸色 */
+            --paper-2: #fbf5e6; /* 卡片浅一点的米白 */
+            --paper-3: #fdfaf0; /* 照片 / 笔记 / 日记纸 */
+            --ink: #3c3833; /* 主文字：墨色 */
+            --ink-soft: #6f675c; /* 次级文字 */
+            --ink-faint: #a3998a; /* 最弱文字 / 辅助线 */
+            --line: #ddd1bb; /* 分隔线 */
+            --sage: #bcd0b6; /* 水彩晕染：青 */
+            --ochre: #e7d3a2; /* 水彩晕染：赭 */
+            --blue: #b3c8dd; /* 水彩晕染：蓝 */
+            --rose: #e3c1bc; /* 水彩晕染：粉 */
+            --wash-opacity: .5; /* 晕染浓淡 */
+            --rule-blue: rgba(91,122,150,.32); /* 日记横线 */
+            --marg-line: rgba(176,73,58,.28); /* 日记红色页边线 */
+            --seal: #b0493a; /* 印章红 / 强调色 */
+            --tape: rgba(228,205,160,.62); /* 和纸胶带 */
+            --card-shadow: 0 14px 26px -14px rgba(86,66,32,.32),0 3px 8px rgba(86,66,32,.14);
+            --note-shadow: 0 12px 24px -16px rgba(86,66,32,.28);
+            --note-border: rgba(221,209,187,.7);
+            --diary-shadow: 0 22px 40px -24px rgba(86,66,32,.35),0 4px 10px rgba(86,66,32,.1);
+            --diary-bg: #fdfaf0;
+            --diary-ink: #31404e;
+            --icon-stroke: #a3998a;
+            --ornament-leaf: #bcd0b6;
+            --hei: "Microsoft YaHei","微软雅黑","PingFang SC","Hiragino Sans GB",sans-serif;
+            --hand: "Caveat","Segoe Script","Comic Sans MS",cursive;
+            --pen: "Long Cang","STKaiti","Kaiti SC","KaiTi","楷体",cursive;
+            --ease: cubic-bezier(.22,1,.36,1);
+        }
+        /* ═══════════ 深色模式（手动选择） ═══════════ */
+        [data-theme="dark"] {
+            --paper: #101013;
+            --paper-2: #16161a;
+            --paper-3: #1c1c21;
+            --ink: #f1eee8;
+            --ink-soft: #b9b4ab;
+            --ink-faint: #7e7a72;
+            --line: rgba(255,255,255,.12);
+            --sage: rgba(104,150,110,.5);
+            --ochre: rgba(170,120,60,.45);
+            --blue: rgba(90,130,175,.45);
+            --rose: rgba(170,95,100,.4);
+            --wash-opacity: .32;
+            --rule-blue: rgba(150,170,195,.16);
+            --marg-line: rgba(217,122,102,.24);
+            --seal: #dd7f6b;
+            --tape: rgba(160,140,100,.26);
+            --card-shadow: 0 16px 34px -16px rgba(0,0,0,.65);
+            --note-shadow: 0 14px 30px -16px rgba(0,0,0,.6);
+            --note-border: rgba(255,255,255,.09);
+            --diary-shadow: 0 24px 48px -24px rgba(0,0,0,.7);
+            --diary-bg: #18181c;
+            --diary-ink: #e4dfd4;
+            --icon-stroke: #6d6961;
+            --ornament-leaf: #5c7058;
+        }
+        /* ═══════════ 深色模式（跟随系统） ═══════════ */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --paper: #101013;
+                --paper-2: #16161a;
+                --paper-3: #1c1c21;
+                --ink: #f1eee8;
+                --ink-soft: #b9b4ab;
+                --ink-faint: #7e7a72;
+                --line: rgba(255,255,255,.12);
+                --sage: rgba(104,150,110,.5);
+                --ochre: rgba(170,120,60,.45);
+                --blue: rgba(90,130,175,.45);
+                --rose: rgba(170,95,100,.4);
+                --wash-opacity: .32;
+                --rule-blue: rgba(150,170,195,.16);
+                --marg-line: rgba(217,122,102,.24);
+                --seal: #dd7f6b;
+                --tape: rgba(160,140,100,.26);
+                --card-shadow: 0 16px 34px -16px rgba(0,0,0,.65);
+                --note-shadow: 0 14px 30px -16px rgba(0,0,0,.6);
+                --note-border: rgba(255,255,255,.09);
+                --diary-shadow: 0 24px 48px -24px rgba(0,0,0,.7);
+                --diary-bg: #18181c;
+                --diary-ink: #e4dfd4;
+                --icon-stroke: #6d6961;
+                --ornament-leaf: #5c7058;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            max-width: 760px;
-            margin: 56px auto;
-            padding: 0 22px;
-            font-family: "Microsoft YaHei", Arial, sans-serif;
-            line-height: 1.9;
-            color: #202124;
-            background: #f7fafc;
+            font-family: var(--hei);
+            color: var(--ink);
+            background: var(--paper);
+            line-height: 1.8;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background .5s var(--ease),color .5s var(--ease);
         }
 
-        /* 设置主标题的颜色。 */
-        h1 {
-            color: #0f4c5c;
+        ::selection {
+            background: rgba(176,73,58,.18);
         }
 
-        /* 设置二级标题的上方间距和颜色。 */
-        h2 {
-            margin-top: 36px;
-            color: #1f2937;
+        /* ═══════════ 两侧固定水彩晕染 ═══════════ */
+        .wash {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
         }
 
-        /* 设置日期文字的颜色。 */
-        .date {
-            color: #64748b;
+            .wash span {
+                position: absolute;
+                border-radius: 50%;
+                filter: blur(70px);
+                opacity: var(--wash-opacity);
+                transition: opacity .5s var(--ease);
+            }
+
+            .wash .w1 {
+                width: 520px;
+                height: 520px;
+                left: -220px;
+                top: -120px;
+                background: radial-gradient(circle at 45% 45%,var(--sage),transparent 68%);
+            }
+
+            .wash .w2 {
+                width: 560px;
+                height: 560px;
+                left: -260px;
+                bottom: -200px;
+                background: radial-gradient(circle at 50% 50%,var(--ochre),transparent 68%);
+            }
+
+            .wash .w3 {
+                width: 520px;
+                height: 520px;
+                right: -230px;
+                top: -100px;
+                background: radial-gradient(circle at 50% 50%,var(--blue),transparent 68%);
+            }
+
+            .wash .w4 {
+                width: 540px;
+                height: 540px;
+                right: -250px;
+                bottom: -180px;
+                background: radial-gradient(circle at 50% 50%,var(--rose),transparent 68%);
+            }
+        /* 纸张颗粒 */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            pointer-events: none;
+            opacity: .05;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        /* 深色下颗粒换一种混合方式，避免发灰 */
+        html[data-theme="dark"] body::after {
+            opacity: .07;
+            mix-blend-mode: overlay;
         }
 
-        /* 设置网页底部版权区的样式。 */
-        footer {
-            margin-top: 56px;
-            padding-top: 20px;
-            border-top: 1px solid #dbe3ea;
-            color: #64748b;
-            font-size: 14px;
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 28px;
         }
 
-        /* 设置超链接颜色。 */
-        a {
-            color: #0969da;
+        /* ═══════════ 右上角：外观设置按钮 ═══════════ */
+        .theme-fab {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 90;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid var(--line);
+            background: rgba(128,128,128,.12);
+            background: color-mix(in srgb,var(--paper-3) 72%,transparent);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: var(--ink-soft);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: all .3s var(--ease);
         }
 
-        /* 让图片不超出页面宽度。 */
-        img {
-            max-width: 100%;
-            height: auto;
+            .theme-fab:hover {
+                color: var(--ink);
+                border-color: var(--ink-faint);
+                transform: translateY(-1px);
+            }
+
+            .theme-fab svg {
+                width: 19px;
+                height: 19px;
+            }
+
+        .theme-menu {
+            position: fixed;
+            top: 64px;
+            right: 16px;
+            z-index: 90;
+            min-width: 178px;
+            padding: 6px;
+            background: var(--paper-3);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 18px 44px -16px rgba(0,0,0,.45);
+            display: none;
+            transition: background .5s var(--ease);
+        }
+
+            .theme-menu.open {
+                display: block;
+            }
+
+            .theme-menu .menu-title {
+                font-size: .74rem;
+                letter-spacing: .18em;
+                color: var(--ink-faint);
+                padding: 6px 12px 4px;
+            }
+
+            .theme-menu button {
+                display: flex;
+                width: 100%;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                padding: 10px 12px;
+                border: none;
+                background: transparent;
+                border-radius: 9px;
+                font-family: var(--hei);
+                font-size: .9rem;
+                color: var(--ink-soft);
+                cursor: pointer;
+                text-align: left;
+                transition: background .2s;
+            }
+
+                .theme-menu button:hover {
+                    background: color-mix(in srgb,var(--ink) 9%,transparent);
+                    color: var(--ink);
+                }
+
+                .theme-menu button .check {
+                    width: 16px;
+                    height: 16px;
+                    color: var(--seal);
+                    opacity: 0;
+                    flex: none;
+                }
+
+                .theme-menu button.on .check {
+                    opacity: 1;
+                }
+
+        /* ═══════════ 顶部寄语区 ═══════════ */
+        .hero {
+            text-align: center;
+            padding: 96px 0 26px;
+        }
+
+            .hero .ornament {
+                display: block;
+                margin: 0 auto 26px;
+                width: 230px;
+                height: 26px;
+            }
+
+                .hero .ornament path {
+                    stroke: var(--icon-stroke);
+                }
+
+                    .hero .ornament path[fill="#bcd0b6"] {
+                        fill: var(--ornament-leaf);
+                        stroke: var(--ornament-leaf);
+                    }
+
+            .hero h1 {
+                font-family: var(--hei);
+                font-size: clamp(1.7rem,3.4vw,2.15rem);
+                font-weight: 600;
+                letter-spacing: .14em;
+                color: var(--ink);
+                margin-bottom: 22px;
+            }
+
+            .hero .intro {
+                max-width: 620px;
+                margin: 0 auto;
+                font-size: clamp(.95rem,1.4vw,1.05rem);
+                color: var(--ink-soft);
+                line-height: 2.05;
+                letter-spacing: .02em;
+            }
+
+            .hero .en {
+                margin-top: 22px;
+                font-family: var(--hand);
+                font-size: clamp(1.35rem,2.4vw,1.7rem);
+                color: var(--seal);
+                opacity: .85;
+                display: inline-block;
+                transform: rotate(-.8deg);
+                font-weight: 500;
+            }
+
+        /* ═══════════ 区块揭示动效 ═══════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s var(--ease),transform .8s var(--ease);
+        }
+
+            .reveal.in {
+                opacity: 1;
+                transform: none;
+            }
+
+        /* ═══════════ 照片手账区 ═══════════ */
+        .gallery {
+            display: grid;
+            grid-template-columns: minmax(300px,420px) minmax(0,1fr);
+            gap: clamp(36px,6vw,72px);
+            align-items: center;
+            padding: 72px 0 40px;
+        }
+
+        .deck-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .deck {
+            position: relative;
+            width: min(82vw,380px);
+            aspect-ratio: 3/3.75;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .photo {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            background: var(--paper-3);
+            padding: 12px 12px 40px;
+            border-radius: 2px;
+            box-shadow: var(--card-shadow);
+            transition: transform .6s var(--ease),opacity .6s var(--ease),background .5s var(--ease);
+            will-change: transform;
+        }
+
+            .photo .tape {
+                position: absolute;
+                top: -12px;
+                left: 50%;
+                width: 84px;
+                height: 24px;
+                transform: translateX(-50%) rotate(-4deg);
+                background: linear-gradient(105deg,rgba(255,255,255,.25),transparent 40%),var(--tape);
+                box-shadow: 0 1px 3px rgba(0,0,0,.15);
+                border-left: 1px dashed rgba(255,255,255,.5);
+                border-right: 1px dashed rgba(255,255,255,.5);
+            }
+
+            .photo .pic {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background: var(--paper-2);
+                transition: background .5s var(--ease);
+            }
+
+                .photo .pic svg {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .photo .pic img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                }
+
+            .photo figcaption {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 9px;
+                text-align: center;
+                font-family: var(--hand);
+                font-size: 1.25rem;
+                color: var(--ink-soft);
+                letter-spacing: .04em;
+            }
+
+        .deck-tools {
+            margin-top: 34px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .icon-btn {
+            width: 38px;
+            height: 38px;
+            border: 1.5px solid var(--ink-faint);
+            background: var(--paper-3);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            color: var(--ink-soft);
+            transition: all .25s var(--ease);
+        }
+
+            .icon-btn:hover {
+                border-color: var(--seal);
+                color: var(--seal);
+                transform: translateY(-2px);
+            }
+
+            .icon-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+        .counter {
+            font-family: var(--hand);
+            font-size: 1.5rem;
+            color: var(--ink);
+            min-width: 64px;
+            text-align: center;
+        }
+
+        .wheel-hint {
+            margin-top: 14px;
+            font-size: .82rem;
+            color: var(--ink-faint);
+            letter-spacing: .04em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .wheel-hint svg {
+                width: 15px;
+                height: 15px;
+                flex: none;
+            }
+
+        /* ═══════════ 右侧照片说明 ═══════════ */
+        .notes-col {
+            position: relative;
+        }
+
+        .notes-head {
+            margin-bottom: 18px;
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+        }
+
+            .notes-head .tag {
+                font-family: var(--hei);
+                font-size: .86rem;
+                letter-spacing: .22em;
+                color: var(--seal);
+            }
+
+            .notes-head .dash {
+                flex: 1;
+                height: 1px;
+                background: var(--line);
+            }
+
+        .notes {
+            display: grid;
+            min-height: 270px;
+        }
+
+        .note {
+            grid-area: 1/1;
+            background: var(--paper-3);
+            padding: 30px 32px 28px;
+            border-radius: 2px;
+            box-shadow: var(--note-shadow);
+            border: 1px solid var(--note-border);
+            transform: rotate(-.4deg);
+            opacity: 0;
+            transition: opacity .45s var(--ease),transform .45s var(--ease),background .5s var(--ease);
+            pointer-events: none;
+        }
+
+            .note.active {
+                opacity: 1;
+                transform: translateY(0) rotate(-.4deg);
+                pointer-events: auto;
+            }
+
+            .note .tape {
+                position: absolute;
+                top: -11px;
+                left: 34px;
+                width: 70px;
+                height: 22px;
+                transform: rotate(-6deg);
+                background: linear-gradient(105deg,rgba(255,255,255,.25),transparent 40%),var(--tape);
+                box-shadow: 0 1px 3px rgba(0,0,0,.12);
+            }
+
+            .note h3 {
+                font-family: var(--hei);
+                font-size: 1.22rem;
+                font-weight: 600;
+                color: var(--ink);
+                letter-spacing: .06em;
+                margin-bottom: 4px;
+            }
+
+            .note .date-en {
+                font-family: var(--hand);
+                font-size: 1.3rem;
+                color: var(--seal);
+                opacity: .8;
+                margin-bottom: 10px;
+            }
+
+            .note p {
+                font-size: .98rem;
+                color: var(--ink-soft);
+                line-height: 2.0;
+            }
+
+        .dots {
+            display: flex;
+            gap: 9px;
+            margin-top: 20px;
+        }
+
+            .dots i {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--line);
+                cursor: pointer;
+                transition: all .3s var(--ease);
+                display: block;
+            }
+
+                .dots i.on {
+                    background: var(--seal);
+                    transform: scale(1.25);
+                }
+
+        /* ═══════════ 日记本区 ═══════════ */
+        .diary-section {
+            padding: 88px 0 30px;
+            text-align: center;
+        }
+
+        .section-label {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            margin-bottom: 34px;
+        }
+
+            .section-label .zh {
+                font-family: var(--hei);
+                font-size: .95rem;
+                letter-spacing: .3em;
+                color: var(--ink);
+                padding-left: .3em;
+            }
+
+            .section-label .en {
+                font-family: var(--hand);
+                font-size: 1.35rem;
+                color: var(--ink-faint);
+            }
+
+        .diary-sheet {
+            position: relative;
+            max-width: 860px;
+            margin: 0 auto;
+            text-align: left;
+            background: linear-gradient(to right,transparent 0,transparent 62px,var(--marg-line) 62px,var(--marg-line) 63px,transparent 63px), repeating-linear-gradient(to bottom,transparent 0,transparent 33px,var(--rule-blue) 33px,var(--rule-blue) 34px), var(--diary-bg);
+            padding: 62px 64px 58px 92px;
+            border-radius: 3px;
+            box-shadow: var(--diary-shadow);
+            transform: rotate(-.3deg);
+            font-family: var(--pen);
+            color: var(--diary-ink);
+            font-size: 1.42rem;
+            line-height: 34px;
+            min-height: 380px;
+            transition: background .5s var(--ease);
+        }
+
+            .diary-sheet .tape-t, .diary-sheet .tape-b {
+                position: absolute;
+                top: -12px;
+                width: 104px;
+                height: 26px;
+                background: linear-gradient(105deg,rgba(255,255,255,.25),transparent 40%),var(--tape);
+                box-shadow: 0 1px 3px rgba(0,0,0,.14);
+            }
+
+            .diary-sheet .tape-t {
+                left: 46px;
+                transform: rotate(-5deg);
+            }
+
+            .diary-sheet .tape-b {
+                right: 46px;
+                transform: rotate(4deg);
+            }
+
+            .diary-sheet .diary-date {
+                font-family: var(--hand);
+                font-size: 1.45rem;
+                color: var(--seal);
+                opacity: .85;
+                margin-bottom: 34px;
+                line-height: 34px;
+            }
+
+            .diary-sheet p {
+                margin: 0 0 34px;
+            }
+
+                .diary-sheet p:last-child {
+                    margin-bottom: 0;
+                }
+
+            .diary-sheet .sign {
+                margin-top: 34px;
+                text-align: right;
+                font-family: var(--hand);
+                font-size: 1.5rem;
+                color: var(--ink-soft);
+            }
+            /* 签名位 */
+            .diary-sheet .signature {
+                display: block;
+                margin: 26px 0 0 auto;
+                height: 104px;
+                object-fit: contain;
+                object-position: right bottom;
+                filter: drop-shadow(0 2px 3px rgba(0,0,0,.18));
+            }
+
+            .diary-sheet .sig-placeholder {
+                margin: 26px 0 0;
+                text-align: right;
+                font-family: var(--hand);
+                font-size: 1.25rem;
+                color: var(--ink-faint);
+            }
+
+        /* ═══════════ 页脚区 ═══════════ */
+        .footer {
+            text-align: center;
+            padding: 80px 0 64px;
+        }
+
+            .footer .fline {
+                display: block;
+                margin: 0 auto 26px;
+                width: 200px;
+                height: 14px;
+            }
+
+                .footer .fline path {
+                    stroke: var(--icon-stroke);
+                }
+
+        .seal {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 22px;
+            background: var(--seal);
+            border-radius: 7px;
+            transform: rotate(-6deg);
+            font-family: var(--pen);
+            color: var(--paper-3);
+            font-size: 1.9rem;
+            box-shadow: 0 6px 14px -6px var(--seal);
+            line-height: 1;
+        }
+
+        .footer .contact {
+            font-size: .95rem;
+            color: var(--ink-soft);
+            letter-spacing: .05em;
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+            .footer .contact a {
+                color: var(--ink);
+                text-decoration: none;
+                border-bottom: 1px solid var(--line);
+                padding-bottom: 2px;
+                transition: color .25s;
+            }
+
+                .footer .contact a:hover {
+                    color: var(--seal);
+                    border-color: var(--seal);
+                }
+
+            .footer .contact .sep {
+                color: var(--ink-faint);
+            }
+
+        .footer .sign-en {
+            margin-top: 16px;
+            font-family: var(--hand);
+            font-size: 1.5rem;
+            color: var(--ink-faint);
+        }
+
+        /* ═══════════ 响应式 ═══════════ */
+        @media (max-width:900px) {
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 44px;
+                padding: 56px 0 20px;
+            }
+
+            .deck-col {
+                order: 1;
+            }
+
+            .notes-col {
+                order: 2;
+            }
+
+            .notes {
+                min-height: 240px;
+            }
+
+            .hero {
+                padding: 72px 0 18px;
+            }
+
+            .diary-section {
+                padding: 64px 0 20px;
+            }
+        }
+
+        @media (max-width:560px) {
+            .wrap {
+                padding: 0 18px;
+            }
+
+            .diary-sheet {
+                padding: 48px 26px 44px 46px;
+                background: linear-gradient(to right,transparent 0,transparent 30px,var(--marg-line) 30px,var(--marg-line) 31px,transparent 31px), repeating-linear-gradient(to bottom,transparent 0,transparent 33px,var(--rule-blue) 33px,var(--rule-blue) 34px), var(--diary-bg);
+                font-size: 1.28rem;
+            }
+
+            .note {
+                padding: 24px 22px 22px;
+            }
+
+            .wash span {
+                opacity: .4;
+                filter: blur(55px);
+            }
+
+            .notes-head .tag {
+                font-size: .95rem;
+                letter-spacing: .18em;
+            }
+
+            .wheel-hint {
+                font-size: .88rem;
+            }
+
+            .icon-btn {
+                width: 44px;
+                height: 44px;
+            }
+
+            .footer .contact a {
+                display: inline-block;
+                padding: 8px 4px;
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+
+            .photo, .note, .icon-btn {
+                transition: none;
+            }
         }
     </style>
 </head>
-
 <body>
-    <!-- 网页的主标题。把“我的名字”替换成你的公开名称。 -->
-    <h1>吴张睿的纪念网站</h1>
+    <!-- ═══════════ 右上角：外观设置（浅色 / 深色 / 跟随系统） ═══════════ -->
+    <button class="theme-fab" id="themeBtn" aria-label="外观设置：浅色 / 深色 / 跟随系统">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8" />
+            <path d="M12 4 a8 8 0 0 1 0 16 Z" fill="currentColor" stroke="none" />
+        </svg>
+    </button>
+    <div class="theme-menu" id="themeMenu" role="menu">
+        <div class="menu-title">外 观</div>
+        <button data-theme-opt="auto" role="menuitemradio">
+            跟随系统
+            <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 l5 5 L19 7" /></svg>
+        </button>
+        <button data-theme-opt="light" role="menuitemradio">
+            浅色模式
+            <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 l5 5 L19 7" /></svg>
+        </button>
+        <button data-theme-opt="dark" role="menuitemradio">
+            深色模式
+            <svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12 l5 5 L19 7" /></svg>
+        </button>
+    </div>
 
-    <!-- 记录网站创建时间。 -->
-    <p class="date">创建于 2026 年</p>
+    <!-- 两侧水彩晕染（装饰，不用改） -->
+    <div class="wash" aria-hidden="true">
+        <span class="w1"></span><span class="w2"></span><span class="w3"></span><span class="w4"></span>
+    </div>
 
-    <!-- 网站简介。 -->
-    <p>
-        你好，这个网站用来纪念我和好兄弟的故事
-    </p>
+    <!-- ═══════════ 寄语区 ═══════════ -->
+    <header class="hero wrap">
+        <svg class="ornament" viewBox="0 0 230 26" aria-hidden="true">
+            <path d="M6,15 C58,5 88,22 112,13" fill="none" stroke="#a3998a" stroke-width="1.4" stroke-linecap="round" />
+            <path d="M118,13 C142,4 174,22 224,15" fill="none" stroke="#a3998a" stroke-width="1.4" stroke-linecap="round" />
+            <path d="M115,7 C121,11 121,17 115,21 C109,17 109,11 115,7 Z" fill="#bcd0b6" stroke="#8fa58a" stroke-width="1.2" />
+        </svg>
+        <!-- 【修改点1】大标题，改引号里的字即可 -->
+        <h1>感谢最好的兄弟</h1>
+        <!-- 【修改点2】介绍文字 -->
+        <p class="intro">
+           这个网站谨在纪念和好兄弟时光。翻开照片，时光就会一页一页翻回去——愿你翻到的每一页，都还带着那天的风。
+        </p>
+        <!-- 【修改点3】手写英文小字 -->
+        <span class="en">Here's to the roads we shared — and all the roads still ahead.</span>
+    </header>
 
-    <!-- 个人介绍区。 -->
-    <h2>关于我</h2>
+    <main class="wrap">
 
-    <!-- 在这里填写你愿意公开展示的内容。 -->
-    <p>
-        传奇不会谢幕
-    </p>
+        <!-- ═══════════ 照片手账区 ═══════════ -->
+        <section class="gallery reveal">
 
-    <!-- 记录区。 -->
-    <h2>大学记录</h2>
+            <!-- 左：堆叠照片。默认是五张钢笔淡彩占位插画；换成自己照片的方法见每张卡片注释 -->
+            <div class="deck-col">
+                <div class="deck" id="deck" tabindex="0" role="group" aria-label="照片堆叠，滚动滚轮或点击切换照片">
 
-    <!-- 你以后可以持续增加新的记录。 -->
-    <p>
-        2026 年：我开始了大学生活，也建立了这个属于自己的网站。
-    </p>
+                    <!-- 【照片1】替换方法：把照片命名 photo1.jpg 放进 assets/ 文件夹，
+    然后删掉整个 <svg …>…</svg>，启用它上面注释掉的 <img>。 -->
+                    <figure class="photo" data-i="0">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo1.jpg" alt="我们的照片 1">
 
-    <!-- 显示仓库中上传的 campus.jpg 图片。 -->
-<img src="1.jpg" alt="校园照片">
+                        </div>
+                        <figcaption>No. 1</figcaption>
+                    </figure>
 
-    <!-- 联系方式区。 -->
-    <h2>联系方式</h2>
+                    <!-- 【照片2】同上，文件命名 photo2.jpg -->
+                    <figure class="photo" data-i="1">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo2.jpg" alt="我们的照片 2">
 
-    <!-- 将邮箱替换为你愿意公开的邮箱地址。 -->
-    <p>
-        邮箱：
-        <a href="mailto:your-email@example.com">
-            18736257353@163.com
-        </a>
-    </p>
+                        </div>
+                        <figcaption>No. 2</figcaption>
+                    </figure>
 
-    <!-- 页脚版权信息。 -->
-    <footer>
-        Copyright &copy; 2026 吴张睿
+                    <!-- 【照片3】同上，文件命名 photo3.jpg -->
+                    <figure class="photo" data-i="2">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo3.jpg" alt="我们的照片 3">
+
+                        </div>
+                        <figcaption>No. 3</figcaption>
+                    </figure>
+
+                    <!-- 【照片4】同上，文件命名 photo4.jpg -->
+                    <figure class="photo" data-i="3">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo4.jpg" alt="我们的照片 4">
+
+                        </div>
+                        <figcaption>No. 4</figcaption>
+                    </figure>
+
+                    <!-- 【照片5】同上，文件命名 photo5.jpg。想要多于 5 张：复制一个 <figure class="photo"> 整块，编号顺延即可。 -->
+                    <figure class="photo" data-i="4">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo5.jpg" alt="我们的照片 5">
+
+                        </div>
+                        <figcaption>No. 5</figcaption>
+                    </figure>
+
+                    <figure class="photo" data-i="5">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo6.jpg" alt="我们的照片 6">
+
+                        </div>
+                        <figcaption>No. 6</figcaption>
+                    </figure>
+
+                    <figure class="photo" data-i="6">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo7.jpg" alt="我们的照片 7">
+
+                        </div>
+                        <figcaption>No. 7</figcaption>
+                    </figure>
+
+                    <figure class="photo" data-i="7">
+                        <span class="tape"></span>
+                        <div class="pic">
+                            <img src="assets/photo8.jpg" alt="我们的照片 8">
+
+                        </div>
+                        <figcaption>No. 8</figcaption>
+                    </figure>
+
+                </div>
+
+                <div class="deck-tools">
+                    <button class="icon-btn" id="prevBtn" aria-label="上一张">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 L8 12 L15 19" /></svg>
+                    </button>
+                    <span class="counter" id="counter">1 / 5</span>
+                    <button class="icon-btn" id="nextBtn" aria-label="下一张">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5 L16 12 L9 19" /></svg>
+                    </button>
+                </div>
+                <p class="wheel-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="3" width="10" height="18" rx="5" /><path d="M12 7 v3" /></svg>
+                    把鼠标放在照片上滚动滚轮，或点击照片，一张张翻看
+                </p>
+            </div>
+
+            <!-- 右：每张照片的说明（与左边照片一一对应，直接改下面文字即可） -->
+            <div class="notes-col">
+                <div class="notes-head">
+                    <span class="tag">照 片 背 后</span>
+                    <span class="dash"></span>
+                </div>
+                <div class="notes" id="notes">
+
+                    <!-- 【说明1】对应照片1：标题 / 英文小标题 / 正文 -->
+                    <article class="note active" data-i="0">
+                        <span class="tape"></span>
+                        <h3>第一张 · 初见</h3>
+                        <div class="date-en">the day we met</div>
+                        <p>梦开始的地方，在这里相遇，开始一篇旅程。</p>
+                    </article>
+
+                    <!-- 【说明2】对应照片2 -->
+                    <article class="note" data-i="1">
+                        <span class="tape"></span>
+                        <h3>第二张 · 同行</h3>
+                        <div class="date-en">on the road together</div>
+                        <p>第一次一起耍，炎炎夏日的汗水成为最好的注脚</p>
+                    </article>
+
+                    <!-- 【说明3】对应照片3 -->
+                    <article class="note" data-i="2">
+                        <span class="tape"></span>
+                        <h3>第三张 · 远方</h3>
+                        <div class="date-en">somewhere far away</div>
+                        <p>没有什么是一起出去玩解决不了的，如果有，就再去一次。</p>
+                    </article>
+
+                    <!-- 【说明4】对应照片4 -->
+                    <article class="note" data-i="3">
+                        <span class="tape"></span>
+                        <h3>第四张 · 出发</h3>
+                        <div class="date-en">ordinary days shine</div>
+                        <p>第一次独立的旅游，一生难忘的回忆。</p>
+                    </article>
+
+                    <article class="note" data-i="4">
+                        <span class="tape"></span>
+                        <h3>第五张 · 旅行</h3>
+                        <div class="date-en">ordinary days shine</div>
+                        <p>陌生的城市却是最熟悉的人，这艘小船承载了太多回忆。</p>
+                    </article>
+
+
+                    <!-- 【说明5】对应照片5 -->
+                    <article class="note" data-i="5">
+                        <span class="tape"></span>
+                        <h3>第六张 · 今夜</h3>
+                        <div class="date-en">under the same stars</div>
+                        <p>那个夜晚：宿舍、熬夜、说不完的话，以及约定好还要再去的远方。</p>
+                    </article>
+
+                    <article class="note" data-i="6">
+                        <span class="tape"></span>
+                        <h3>第七张 · 高考</h3>
+                        <div class="date-en">ordinary days shine</div>
+                        <p>高考之前，也是意气风发之时，那份少年心气愿你我永存。</p>
+                    </article>
+
+                    <article class="note" data-i="7">
+                        <span class="tape"></span>
+                        <h3>第八张 · 自由</h3>
+                        <div class="date-en">ordinary days shine</div>
+                        <p>新的旅程就在眼前，有些时候，一瞬间也是永远。</p>
+                    </article>
+
+                </div>
+                <div class="dots" id="dots" aria-hidden="true">
+                    <i class="on"></i><i></i><i></i><i></i><i></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══════════ 日记本区 ═══════════ -->
+        <section class="diary-section reveal">
+            <div class="section-label">
+                <span class="zh">写 在 最 后</span>
+                <span class="en">a little note from me</span>
+            </div>
+            <div class="diary-sheet">
+                <span class="tape-t"></span><span class="tape-b"></span>
+                <!-- 【修改点6】日期与正文都在这里改，一行一个 <p>，加行就复制一个 <p>…</p> -->
+                <div class="diary-date">Autumn · 2026</div>
+                <p>兄弟：</p>
+                <p>
+                    写在这里随便写上几笔，淡开学校的世界，沉浸于往事之中。这些年，我们一起走过陌生的城市，在深夜的路边摊聊到过天亮，也一起熬过了谁都不容易的日子。
+                </p>
+                <p>
+                    谢谢你来过我的青春，还一待就是这么多年。愿我们以后的路，都像手账里的这些页——有风景，有故事，也一直有彼此。
+                </p>
+                <p>前路顺遂，再见时，仍是少年。</p>
+                <p class="sign">— yours, always.</p>
+                <!-- 【修改点7】签名：把签名导出成 PNG（PDF 请先用在线工具转成 PNG），
+                     命名 signature.png 放进 assets/ 文件夹，然后删掉下面这行占位，启用 <img>。 -->
+                <!-- 启用后删掉占位行：<img class="signature" src="assets/signature.png" alt="我的签名"> -->
+                <div class="sig-placeholder">（在这里放你的签名 · assets/signature.png）</div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ═══════════ 页脚区 ═══════════ -->
+    <footer class="footer wrap reveal">
+        <svg class="fline" viewBox="0 0 200 14" aria-hidden="true">
+            <path d="M4,8 C50,2 76,12 100,7 C124,2 152,12 196,8" fill="none" stroke="#c4b8a2" stroke-width="1.3" stroke-linecap="round" />
+        </svg>
+        <div class="seal" aria-hidden="true">友</div>
+        <div class="contact">
+            <!-- 【修改点8】把两处 your.email@example.com 换成你的邮箱 -->
+            <a href="mailto:18736257353@163.com.com">18736257353@163.com</a>
+            <span class="sep">·</span>
+            <!-- 【修改点9】把“某某大学”换成你的学校 -->
+            <span>武汉大学</span>
+        </div>
+        <p class="sign-en">Cheers, old friend.</p>
     </footer>
+
+    <script>(function(){
+  "use strict";
+
+  /* ═══════════ 滚动揭示：各区块平滑淡入 ═══════════ */
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); }
+    });
+  },{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+
+  /* ═══════════ 照片堆叠：滚轮 / 点击 / 按钮 / 方向键翻看 ═══════════ */
+  var deck = document.getElementById("deck");
+  var counter = document.getElementById("counter");
+  var notesWrap = document.getElementById("notes");
+  var dotsWrap = document.getElementById("dots");
+  var order = [];
+
+  function cards(){ return Array.prototype.slice.call(deck.querySelectorAll(".photo")); }
+  function notes(){ return Array.prototype.slice.call(notesWrap.querySelectorAll(".note")); }
+  function dots(){ return Array.prototype.slice.call(dotsWrap.querySelectorAll("i")); }
+
+  /* 每层（越靠前数值越大）的偏移与旋转，可在这里微调堆叠效果 */
+  function depthTransform(d){
+    if(d === 0) return {t:"translate(0px,0px) rotate(-1.6deg) scale(1)", op:1, z:30};
+    if(d === 1) return {t:"translate(9px,17px) rotate(2.4deg) scale(.965)", op:1, z:20};
+    if(d === 2) return {t:"translate(-8px,34px) rotate(-3.4deg) scale(.93)", op:1, z:10};
+    return {t:"translate(0px,44px) rotate(0deg) scale(.9)", op:0, z:5};
+  }
+
+  function render(){
+    var cs = cards(), ns = notes(), ds = dots();
+    var n = cs.length;
+    if(!order.length || order.length !== n){
+      order = [];
+      for(var k=0;k<n;k++) order.push(k);
+    }
+    cs.forEach(function(card, i){
+      var d = order.indexOf(i);
+      var st = depthTransform(d);
+      card.style.transform = st.t;
+      card.style.opacity = st.op;
+      card.style.zIndex = st.z;
+      card.style.pointerEvents = d === 0 ? "auto" : "none";
+    });
+    var front = order[0];
+    ns.forEach(function(noteEl, i){ noteEl.classList.toggle("active", i === front); });
+    ds.forEach(function(dot, i){ dot.classList.toggle("on", i === front); });
+    if(counter) counter.textContent = (front+1) + " / " + n;
+  }
+
+  function go(dir){
+    var n = cards().length;
+    if(n < 2) return;
+    if(dir > 0) order.push(order.shift());
+    else order.unshift(order.pop());
+    render();
+  }
+  function goTo(target){
+    var guard = 0;
+    while(order[0] !== target && guard++ < 64){ order.push(order.shift()); }
+    render();
+  }
+
+  /* 滚轮：累积增量，跨过阈值才翻一张，并锁住页面滚动 */
+  var acc = 0, lockUntil = 0;
+  deck.addEventListener("wheel", function(e){
+    e.preventDefault();
+    var now = performance.now();
+    acc += e.deltaY;
+    if(now < lockUntil) return;
+    if(Math.abs(acc) > 26){
+      go(acc > 0 ? 1 : -1);
+      acc = 0;
+      lockUntil = now + 380;
+    }
+  }, {passive:false});
+
+  deck.addEventListener("click", function(){ go(1); });
+  deck.addEventListener("keydown", function(e){
+    if(e.key === "ArrowDown" || e.key === "ArrowRight"){ e.preventDefault(); go(1); }
+    if(e.key === "ArrowUp" || e.key === "ArrowLeft"){ e.preventDefault(); go(-1); }
+  });
+  document.getElementById("prevBtn").addEventListener("click", function(e){ e.stopPropagation(); go(-1); });
+  document.getElementById("nextBtn").addEventListener("click", function(e){ e.stopPropagation(); go(1); });
+  dotsWrap.addEventListener("click", function(e){
+    if(e.target.tagName.toLowerCase() === "i") goTo(dots().indexOf(e.target));
+  });
+
+  render();
+
+  /* ═══════════ 外观模式：浅色 / 深色 / 跟随系统 ═══════════ */
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  var themeBtn = document.getElementById("themeBtn");
+  var themeMenu = document.getElementById("themeMenu");
+  var optBtns = Array.prototype.slice.call(themeMenu.querySelectorAll("[data-theme-opt]"));
+
+  function currentTheme(){
+    var attr = document.documentElement.dataset.theme;
+    if(attr === "light" || attr === "dark") return attr;
+    return "auto";
+  }
+  function applyTheme(t){
+    if(t === "light" || t === "dark"){
+      document.documentElement.dataset.theme = t;   /* 强制浅色/深色 */
+    }else{
+      delete document.documentElement.dataset.theme; /* 跟随系统 */
+      t = "auto";
+    }
+    var current = document.documentElement.dataset.theme || "auto";
+    optBtns.forEach(function(btn){
+      var opt = btn.getAttribute("data-theme-opt");
+      btn.classList.toggle("on", opt === current);
+      btn.setAttribute("aria-checked", opt === current ? "true" : "false");
+    });
+    try{ localStorage.setItem("fj-theme", t); }catch(e){}
+  }
+
+  optBtns.forEach(function(btn){
+    btn.addEventListener("click", function(){
+      applyTheme(btn.getAttribute("data-theme-opt"));
+      themeMenu.classList.remove("open");
+    });
+  });
+  themeBtn.addEventListener("click", function(e){
+    e.stopPropagation();
+    themeMenu.classList.toggle("open");
+  });
+  document.addEventListener("click", function(e){
+    if(!themeMenu.contains(e.target)) themeMenu.classList.remove("open");
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") themeMenu.classList.remove("open");
+  });
+  /* 跟随系统时，系统切换深浅色要实时响应 */
+  mq.addEventListener("change", function(){
+    if(!document.documentElement.dataset.theme) applyTheme("auto");
+  });
+
+  /* 初始主题：网址 ?theme=xxx > 上次选择 > 跟随系统 */
+  var init = "auto";
+  try{
+    var q = new URLSearchParams(location.search).get("theme");
+    if(q === "light" || q === "dark" || q === "auto") init = q;
+    else init = localStorage.getItem("fj-theme") || "auto";
+  }catch(e){}
+  applyTheme(init);
+
+})();</script>
 </body>
 </html>
