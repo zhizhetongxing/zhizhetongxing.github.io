@@ -877,9 +877,139 @@
                 transition: none;
             }
         }
+
+        
+/* ═══════════ 开场：画卷展开（请勿删改；想调节奏改这里） ═══════════ */
+        /* 封面：一整张纸盖住页面，加载完成后向上卷起 */
+        .intro-cover {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: var(--paper);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            will-change: transform;
+            transition: transform 1.15s cubic-bezier(.22,1,.36,1),visibility 0s 1.2s;
+            /* 卷起时投下的一道影，像纸页离开桌面 */
+            box-shadow: 0 -40px 90px -30px rgba(0,0,0,.35);
+        }
+
+            .intro-cover.done {
+                transform: translateY(-100%);
+                visibility: hidden;
+            }
+
+        .intro-inner {
+            text-align: center;
+            animation: introFade .9s var(--ease) both;
+        }
+
+        @keyframes introFade {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .intro-seal {
+            width: 46px;
+            height: 46px;
+            margin: 0 auto 16px;
+            display: grid;
+            place-items: center;
+            background: var(--seal);
+            border-radius: 6px;
+            transform: rotate(-6deg);
+            font-family: var(--pen);
+            color: var(--paper-3);
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .intro-en {
+            font-family: var(--hand);
+            font-size: 1.45rem;
+            color: var(--ink-faint);
+            letter-spacing: .04em;
+        }
+        /* 底部一根细线：图片加载时慢慢走完，像卷轴的轴 */
+        .intro-line {
+            width: 110px;
+            height: 1.5px;
+            margin: 18px auto 0;
+            background: var(--line);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+            .intro-line::after {
+                content: "";
+                display: block;
+                height: 100%;
+                width: 100%;
+                background: var(--seal);
+                transform: translateX(-101%);
+                transition: transform .9s var(--ease);
+            }
+
+        .intro-cover.loaded .intro-line::after {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
+    <!-- ═══════════ 开场画卷封面（与本块末尾的 <script> 配套，请勿删除整块） ═══════════ -->
+    <div class="intro-cover" id="introCover" aria-hidden="true">
+        <div class="intro-inner">
+            <div class="intro-seal">友</div>
+            <div class="intro-en">unfolding our story…</div>
+            <div class="intro-line"></div>
+        </div>
+    </div>
+    <!-- 万一访客浏览器禁用了 JS，封面也要自动消失 -->
+    <noscript>
+    <style>
+        .intro-cover {
+            display: none;
+        }
+    </style></noscript>
+    <script>/* 开场节奏说明：
+   1) 一打开网址，封面盖住整页，锁住滚动，照片在后台继续加载；
+   2) window.load 触发（图片就绪）后，进度线走完（约0.55秒），封面再向上卷起（约1.15秒）；
+   3) 为避免闪一下：最短展示 0.9 秒；为避免慢网卡死：最多等 3.5 秒也一定展开。
+   想调节奏：改下面 MIN_MS（最短展示）、MAX_WAIT_MS（最多等待）。 */
+(function(){
+  var cover = document.getElementById('introCover');
+  if(!cover) return;
+  var MIN_MS = 900, MAX_WAIT_MS = 3500;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ cover.remove(); document.body.style.overflow=''; return; }
+  document.body.style.overflow = 'hidden';
+  var start = Date.now(), finished = false;
+  function finish(){
+    if(finished) return; finished = true;
+    var hold = Math.max(0, MIN_MS - (Date.now() - start));
+    setTimeout(function(){
+      cover.classList.add('loaded');              // 进度线走完
+      setTimeout(function(){
+        cover.classList.add('done');             // 封面向上卷起
+        document.body.style.overflow = '';       // 恢复滚动
+      }, 550);
+    }, hold);
+  }
+  if(document.readyState === 'complete') finish();
+  else{
+    window.addEventListener('load', finish);    // 等图片加载完
+    setTimeout(finish, MAX_WAIT_MS);            // 超时兜底
+  }
+})();</script>
+    
     <!-- ═══════════ 右上角：外观设置（浅色 / 深色 / 跟随系统） ═══════════ -->
     <button class="theme-fab" id="themeBtn" aria-label="外观设置：浅色 / 深色 / 跟随系统">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
